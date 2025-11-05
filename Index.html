@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Liquidity - Interactive Film Investment Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .film-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .film-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .genre-badge {
+            transition: all 0.2s ease;
+        }
+        
+        .genre-badge:hover {
+            transform: scale(1.1);
+        }
+        
+        .active-genre {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .progress-ring {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                        Deep Liquidity
+                    </span>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <a href="#marketplace" class="text-gray-700 hover:text-purple-600 transition">Browse Films</a>
+                    <a href="#calculator" class="text-gray-700 hover:text-purple-600 transition">Calculator</a>
+                    <a href="#portfolio" class="text-gray-700 hover:text-purple-600 transition">My Portfolio</a>
+                    <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white pt-32 pb-20 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up">
+                    <h1 class="text-5xl font-bold mb-6">
+                        Own a Piece of Hollywood
+                    </h1>
+                    <p class="text-xl mb-8 text-purple-100">
+                        Invest in independent films starting at $2,500. Browse 12 active projects, track your portfolio, and trade on our secondary market.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button onclick="scrollToMarketplace()" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                            Browse Films
+                        </button>
+                        <button onclick="openCalculator()" class="glass-effect text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition">
+                            Investment Calculator
+                        </button>
+                    </div>
+                    <div class="mt-8 flex items-center space-x-6">
+                        <div>
+                            <div class="text-3xl font-bold">$30M</div>
+                            <div class="text-purple-200 text-sm">Total Funded</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">12</div>
+                            <div class="text-purple-200 text-sm">Active Films</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">1,668</div>
+                            <div class="text-purple-200 text-sm">Investors</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">Quick Stats</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Average ROI</span>
+                                <span class="font-bold text-green-300">+23%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-20 rounded-full h-3">
+                                <div class="bg-green-400 h-3 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Funding Success Rate</span>
+                                <span class="font-bold text-blue-300">92%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-20 rounded-full h-3">
+                                <div class="bg-blue-400 h-3 rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>Secondary Market Liquidity</span>
+                                <span class="font-bold text-yellow-300">$1.2M</span>
+                            </div>
+                            <div class="bg-white bg-opacity-20 rounded-full h-3">
+                                <div class="bg-yellow-400 h-3 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Film Marketplace -->
+    <section id="marketplace" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Browse Investment Opportunities</h2>
+                <p class="text-xl text-gray-600">12 films actively raising capital</p>
+            </div>
+
+            <!-- Genre Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="filterFilms('all')" class="genre-badge active-genre px-6 py-2 rounded-full font-semibold text-sm shadow-md" data-genre="all">
+                    All Genres
+                </button>
+                <button onclick="filterFilms('horror')" class="genre-badge px-6 py-2 rounded-full font-semibold text-sm bg-gray-100 hover:bg-gray-200 shadow-md" data-genre="horror">
+                    🎃 Horror
+                </button>
+                <button onclick="filterFilms('drama')" class="genre-badge px-6 py-2 rounded-full font-semibold text-sm bg-gray-100 hover:bg-gray-200 shadow-md" data-genre="drama">
+                    🎭 Drama
+                </button>
+                <button onclick="filterFilms('thriller')" class="genre-badge px-6 py-2 rounded-full font-semibold text-sm bg-gray-100 hover:bg-gray-200 shadow-md" data-genre="thriller">
+                    🔪 Thriller
+                </button>
+                <button onclick="filterFilms('comedy')" class="genre-badge px-6 py-2 rounded-full font-semibold text-sm bg-gray-100 hover:bg-gray-200 shadow-md" data-genre="comedy">
+                    😂 Comedy
+                </button>
+                <button onclick="filterFilms('scifi')" class="genre-badge px-6 py-2 rounded-full font-semibold text-sm bg-gray-100 hover:bg-gray-200 shadow-md" data-genre="scifi">
+                    🚀 Sci-Fi
+                </button>
+                <button onclick="filterFilms('documentary')" class="genre-badge px-6 py-2 rounded-full font-semibold text-sm bg-gray-100 hover:bg-gray-200 shadow-md" data-genre="documentary">
+                    📹 Documentary
+                </button>
+            </div>
+
+            <!-- Film Cards Grid -->
+            <div id="filmGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Films will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Calculator -->
+    <section id="calculator" class="py-20 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Investment Calculator</h2>
+                <p class="text-xl text-gray-600">See your potential returns</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Your Investment</h3>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold mb-2">Investment Amount</label>
+                            <div class="flex items-center space-x-4 mb-4">
+                                <span class="text-2xl font-bold">$</span>
+                                <input type="range" id="investmentSlider" min="2500" max="100000" step="2500" value="10000" 
+                                    class="flex-1 h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer"
+                                    oninput="updateCalculator()">
+                            </div>
+                            <div class="text-center">
+                                <span id="investmentAmount" class="text-4xl font-bold text-purple-600">$10,000</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold mb-2">Expected Film Performance</label>
+                            <select id="performanceSelect" onchange="updateCalculator()" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-purple-600 focus:outline-none">
+                                <option value="conservative">Conservative (15% ROI)</option>
+                                <option value="moderate" selected>Moderate (25% ROI)</option>
+                                <option value="strong">Strong (40% ROI)</option>
+                                <option value="breakout">Breakout Hit (100% ROI)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold mb-2">Investment Type</label>
+                            <select id="investmentType" onchange="updateCalculator()" class="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-purple-600 focus:outline-none">
+                                <option value="equity">Equity Tokens (High Risk/Reward)</option>
+                                <option value="debt">Senior Debt (Lower Risk)</option>
+                                <option value="mezzanine">Mezzanine (Balanced)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-semibold mb-2">Time Horizon</label>
+                            <div class="flex space-x-2">
+                                <button onclick="setTimeHorizon(2)" class="time-btn flex-1 px-4 py-2 rounded-lg bg-gray-100 hover:bg-purple-600 hover:text-white transition">2 Years</button>
+                                <button onclick="setTimeHorizon(3)" class="time-btn flex-1 px-4 py-2 rounded-lg bg-purple-600 text-white">3 Years</button>
+                                <button onclick="setTimeHorizon(5)" class="time-btn flex-1 px-4 py-2 rounded-lg bg-gray-100 hover:bg-purple-600 hover:text-white transition">5 Years</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Projected Returns</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6">
+                                <div class="text-sm text-purple-600 font-semibold mb-2">Total Return</div>
+                                <div id="totalReturn" class="text-4xl font-bold text-purple-600 mb-2">$12,500</div>
+                                <div id="returnPercentage" class="text-sm text-gray-600">+25% gain</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6">
+                                <div class="text-sm text-green-600 font-semibold mb-2">Annual ROI</div>
+                                <div id="annualROI" class="text-4xl font-bold text-green-600">8.3%</div>
+                            </div>
+
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6">
+                                <div class="text-sm text-blue-600 font-semibold mb-2">Platform Fees</div>
+                                <div id="platformFees" class="text-4xl font-bold text-blue-600">$550</div>
+                                <div class="text-sm text-gray-600 mt-2">5.5% total (one-time)</div>
+                            </div>
+
+                            <div class="border-t-2 pt-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">Initial Investment</span>
+                                    <span id="initialInv" class="font-bold">$10,000</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">Gross Return</span>
+                                    <span id="grossReturn" class="font-bold text-green-600">+$2,500</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">Platform Fees</span>
+                                    <span id="fees" class="font-bold text-red-600">-$550</span>
+                                </div>
+                                <div class="flex justify-between items-center text-lg font-bold border-t-2 pt-2">
+                                    <span>Net Profit</span>
+                                    <span id="netProfit" class="text-purple-600">$1,950</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="openInvestmentModal()" class="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-xl transition">
+                            Start Investing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Dashboard -->
+    <section id="portfolio" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Sample Portfolio Dashboard</h2>
+                <p class="text-xl text-gray-600">Track your investments in real-time</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
+                    <div class="text-sm mb-2 opacity-80">Total Invested</div>
+                    <div class="text-3xl font-bold">$45,000</div>
+                    <div class="text-sm mt-2 opacity-80">Across 5 films</div>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
+                    <div class="text-sm mb-2 opacity-80">Current Value</div>
+                    <div class="text-3xl font-bold">$52,350</div>
+                    <div class="text-sm mt-2 opacity-80">+$7,350 (+16.3%)</div>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+                    <div class="text-sm mb-2 opacity-80">Unrealized Gains</div>
+                    <div class="text-3xl font-bold">$7,350</div>
+                    <div class="text-sm mt-2 opacity-80">3 films in profit</div>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white">
+                    <div class="text-sm mb-2 opacity-80">Liquid Balance</div>
+                    <div class="text-3xl font-bold">$8,200</div>
+                    <div class="text-sm mt-2 opacity-80">Available to withdraw</div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold mb-6">Your Investments</h3>
+                <div class="space-y-4">
+                    <!-- Portfolio items will be here -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                                WM
+                            </div>
+                            <div>
+                                <div class="font-bold">The Whisper Man</div>
+                                <div class="text-sm text-gray-600">Horror • $12,000 invested</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">+$3,240</div>
+                            <div class="text-sm text-gray-600">+27% return</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                                SS
+                            </div>
+                            <div>
+                                <div class="font-bold">Silicon Shadows</div>
+                                <div class="text-sm text-gray-600">Thriller • $10,000 invested</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">+$1,850</div>
+                            <div class="text-sm text-gray-600">+18.5% return</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                                BG
+                            </div>
+                            <div>
+                                <div class="font-bold">Brooklyn Gardens</div>
+                                <div class="text-sm text-gray-600">Drama • $8,000 invested</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">+$2,160</div>
+                            <div class="text-sm text-gray-600">+27% return</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-red-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                                LH
+                            </div>
+                            <div>
+                                <div class="font-bold">The Last Harvest</div>
+                                <div class="text-sm text-gray-600">Documentary • $7,500 invested</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-gray-600">+$100</div>
+                            <div class="text-sm text-gray-600">+1.3% return</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                                QC
+                            </div>
+                            <div>
+                                <div class="font-bold">Quantum Collapse</div>
+                                <div class="text-sm text-gray-600">Sci-Fi • $7,500 invested</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-red-600">-$2,000</div>
+                            <div class="text-sm text-gray-600">-26.7% return</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to Start Investing?</h2>
+            <p class="text-xl mb-8 text-purple-100">
+                Join 1,668 investors who have already invested $30M in independent films
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition">
+                    Create Free Account
+                </button>
+                <button class="glass-effect text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-purple-600 transition">
+                    Schedule Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Film Detail Modal -->
+    <div id="filmModal" class="modal">
+        <div class="bg-white rounded-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="text-2xl font-bold text-white mb-4">Deep Liquidity</div>
+                <p class="text-sm">Interactive Demo • Built for YC W25 Application</p>
+                <p class="text-xs mt-4 text-gray-500">This is a hypothetical business model for demonstration purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Film Database
+        const films = [
+            {
+                id: 1,
+                title: "The Whisper Man",
+                genre: "horror",
+                director: "Sarah Mitchell",
+                budget: 2500000,
+                raised: 2100000,
+                target: 2500000,
+                investors: 167,
+                minInvestment: 2500,
+                expectedROI: "25-35%",
+                timeline: "18 months",
+                status: "84% funded",
+                description: "A psychological horror film about a small-town detective investigating mysterious disappearances linked to an urban legend.",
+                highlights: ["Sundance 2024 Finalist", "Award-winning director", "Pre-sales: $800K"],
+                cast: "Emily Mortimer, Oscar Isaac",
+                production: "Begins March 2025",
+                distribution: "A24 interested"
+            },
+            {
+                id: 2,
+                title: "Silicon Shadows",
+                genre: "thriller",
+                director: "James Chen",
+                budget: 3200000,
+                raised: 2880000,
+                target: 3200000,
+                investors: 203,
+                minInvestment: 5000,
+                expectedROI: "20-30%",
+                timeline: "24 months",
+                status: "90% funded",
+                description: "A tech thriller following a cybersecurity expert who uncovers a conspiracy within a powerful AI company.",
+                highlights: ["SXSW Official Selection", "Notable cast", "Multiple offers"],
+                cast: "Dev Patel, Tessa Thompson",
+                production: "Pre-production complete",
+                distribution: "Netflix in discussions"
+            },
+            {
+                id: 3,
+                title: "Brooklyn Gardens",
+                genre: "drama",
+                director: "Maria Rodriguez",
+                budget: 1800000,
+                raised: 1800000,
+                target: 1800000,
+                investors: 142,
+                minInvestment: 2500,
+                expectedROI: "15-25%",
+                timeline: "20 months",
+                status: "100% funded",
+                description: "An intimate drama about three generations of a Puerto Rican family navigating gentrification in Brooklyn.",
+                highlights: ["Tribeca Lab Fellow", "Cast complete", "Production started"],
+                cast: "Rosario Dawson, John Leguizamo",
+                production: "Week 3 of shooting",
+                distribution: "Multiple festival invites"
+            },
+            {
+                id: 4,
+                title: "Quantum Collapse",
+                genre: "scifi",
+                director: "Alex Novak",
+                budget: 4500000,
+                raised: 3600000,
+                target: 4500000,
+                investors: 287,
+                minInvestment: 5000,
+                expectedROI: "30-50%",
+                timeline: "30 months",
+                status: "80% funded",
+                description: "A mind-bending sci-fi thriller about a physicist who discovers parallel universes are collapsing into ours.",
+                highlights: ["VFX team from Dune", "Science advisor from MIT", "Pre-viz complete"],
+                cast: "Oscar Isaac, Lupita Nyong'o",
+                production: "VFX in development",
+                distribution: "Major studio interest"
+            },
+            {
+                id: 5,
+                title: "The Last Harvest",
+                genre: "documentary",
+                director: "Tom Anderson",
+                budget: 800000,
+                raised: 650000,
+                target: 800000,
+                investors: 89,
+                minInvestment: 2500,
+                expectedROI: "10-20%",
+                timeline: "15 months",
+                status: "81% funded",
+                description: "A documentary following three farming families fighting to preserve their land against corporate agriculture.",
+                highlights: ["Sundance Institute Fellow", "50 hours shot", "Emmy-winning DP"],
+                cast: "Documentary (real subjects)",
+                production: "Principal photography done",
+                distribution: "PBS interested"
+            },
+            {
+                id: 6,
+                title: "Midnight Diner",
+                genre: "comedy",
+                director: "Lisa Park",
+                budget: 2200000,
+                raised: 1540000,
+                target: 2200000,
+                investors: 128,
+                minInvestment: 2500,
+                expectedROI: "20-30%",
+                timeline: "18 months",
+                status: "70% funded",
+                description: "A heartwarming comedy about the eccentric staff and customers of a 24-hour diner in Queens.",
+                highlights: ["Based on viral web series", "Built-in audience", "500K followers"],
+                cast: "Awkwafina, Steven Yeun",
+                production: "Casting complete",
+                distribution: "Amazon interested"
+            },
+            {
+                id: 7,
+                title: "The Recursion",
+                genre: "thriller",
+                director: "David Kim",
+                budget: 2800000,
+                raised: 2240000,
+                target: 2800000,
+                investors: 174,
+                minInvestment: 5000,
+                expectedROI: "25-40%",
+                timeline: "22 months",
+                status: "80% funded",
+                description: "A psychological thriller about a woman trapped in a time loop who must solve her own murder.",
+                highlights: ["Genre festival favorite", "Strong script", "Unique premise"],
+                cast: "Jessica Chastain, Adam Driver",
+                production: "Location scouting",
+                distribution: "A24 & Neon reviewing"
+            },
+            {
+                id: 8,
+                title: "Neon Nights",
+                genre: "drama",
+                director: "Ryan Cooper",
+                budget: 3500000,
+                raised: 2450000,
+                target: 3500000,
+                investors: 195,
+                minInvestment: 5000,
+                expectedROI: "20-35%",
+                timeline: "24 months",
+                status: "70% funded",
+                description: "A gritty drama following a former boxer turned nightclub bouncer protecting his community from organized crime.",
+                highlights: ["Cannes potential", "Established director", "Strong visual style"],
+                cast: "Michael B. Jordan, Tessa Thompson",
+                production: "Pre-production",
+                distribution: "International pre-sales"
+            },
+            {
+                id: 9,
+                title: "The Comedian's Last Laugh",
+                genre: "comedy",
+                director: "Jennifer Stone",
+                budget: 1500000,
+                raised: 1200000,
+                target: 1500000,
+                investors: 98,
+                minInvestment: 2500,
+                expectedROI: "15-25%",
+                timeline: "16 months",
+                status: "80% funded",
+                description: "A dark comedy about a washed-up comedian who fakes his death to revive his career posthumously.",
+                highlights: ["Festival circuit ready", "Cast complete", "Original concept"],
+                cast: "Bill Hader, Jenny Slate",
+                production: "Starting June 2025",
+                distribution: "Comedy Central interested"
+            },
+            {
+                id: 10,
+                title: "Blood Moon Rising",
+                genre: "horror",
+                director: "Marcus Webb",
+                budget: 1200000,
+                raised: 960000,
+                target: 1200000,
+                investors: 112,
+                minInvestment: 2500,
+                expectedROI: "30-45%",
+                timeline: "14 months",
+                status: "80% funded",
+                description: "A folk horror film about a remote village with a dark secret that awakens during a rare blood moon eclipse.",
+                highlights: ["Horror genre track record", "Practical effects", "279% avg ROI genre"],
+                cast: "Anya Taylor-Joy, Bill Skarsgård",
+                production: "Location secured",
+                distribution: "Shudder interested"
+            },
+            {
+                id: 11,
+                title: "Echoes of Tomorrow",
+                genre: "scifi",
+                director: "Nina Patel",
+                budget: 3800000,
+                raised: 2660000,
+                target: 3800000,
+                investors: 221,
+                minInvestment: 5000,
+                expectedROI: "25-40%",
+                timeline: "28 months",
+                status: "70% funded",
+                description: "A sci-fi drama exploring humanity's first contact with an alien signal from the future warning of Earth's destruction.",
+                highlights: ["Arrival vibe", "Strong script", "Science-grounded"],
+                cast: "Rami Malek, Cate Blanchett",
+                production: "Q2 2025 start",
+                distribution: "Apple TV+ reviewing"
+            },
+            {
+                id: 12,
+                title: "The Foster System",
+                genre: "documentary",
+                director: "Amanda Rodriguez",
+                budget: 950000,
+                raised: 712500,
+                target: 950000,
+                investors: 76,
+                minInvestment: 2500,
+                expectedROI: "12-22%",
+                timeline: "18 months",
+                status: "75% funded",
+                description: "An investigative documentary exposing systemic issues in America's foster care system through personal stories.",
+                highlights: ["Emmy-winning director", "Social impact", "Festival bound"],
+                cast: "Documentary subjects",
+                production: "60% complete",
+                distribution: "HBO Documentary Films"
+            }
+        ];
+
+        let currentTimeHorizon = 3;
+        let currentFilmFilter = 'all';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFilms();
+            updateCalculator();
+        });
+
+        // Render Films
+        function renderFilms() {
+            const grid = document.getElementById('filmGrid');
+            const filteredFilms = currentFilmFilter === 'all' 
+                ? films 
+                : films.filter(f => f.genre === currentFilmFilter);
+
+            grid.innerHTML = filteredFilms.map(film => {
+                const percentage = ((film.raised / film.target) * 100).toFixed(0);
+                return `
+                    <div class="film-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openFilmModal(${film.id})">
+                        <div class="h-48 bg-gradient-to-br ${getGradientForGenre(film.genre)} flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <div class="text-4xl font-bold mb-2">${film.title.split(' ').map(w => w[0]).join('')}</div>
+                                <div class="text-sm opacity-80">${film.genre.toUpperCase()}</div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-xl font-bold">${film.title}</h3>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-xs font-semibold">
+                                    ${film.genre}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-4">Dir. ${film.director}</p>
+                            
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span class="text-gray-600">Funding Progress</span>
+                                    <span class="font-bold text-purple-600">${percentage}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full transition-all" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>$${(film.raised / 1000000).toFixed(1)}M raised</span>
+                                    <span>$${(film.target / 1000000).toFixed(1)}M goal</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                                <div>
+                                    <div class="text-gray-500">Min Investment</div>
+                                    <div class="font-bold">$${film.minInvestment.toLocaleString()}</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500">Expected ROI</div>
+                                    <div class="font-bold text-green-600">${film.expectedROI}</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500">Timeline</div>
+                                    <div class="font-bold">${film.timeline}</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-500">Investors</div>
+                                    <div class="font-bold">${film.investors}</div>
+                                </div>
+                            </div>
+
+                            <button class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition">
+                                View Details & Invest
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getGradientForGenre(genre) {
+            const gradients = {
+                horror: 'from-red-500 to-orange-600',
+                drama: 'from-blue-500 to-purple-600',
+                thriller: 'from-gray-700 to-gray-900',
+                comedy: 'from-yellow-400 to-orange-500',
+                scifi: 'from-blue-600 to-purple-700',
+                documentary: 'from-green-500 to-teal-600'
+            };
+            return gradients[genre] || 'from-gray-500 to-gray-700';
+        }
+
+        // Filter Films
+        function filterFilms(genre) {
+            currentFilmFilter = genre;
+            
+            // Update button styles
+            document.querySelectorAll('.genre-badge').forEach(btn => {
+                btn.classList.remove('active-genre', 'text-white');
+                btn.classList.add('bg-gray-100', 'hover:bg-gray-200');
+            });
+            
+            const activeBtn = document.querySelector(`[data-genre="${genre}"]`);
+            activeBtn.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+            activeBtn.classList.add('active-genre', 'text-white');
+            
+            renderFilms();
+        }
+
+        // Open Film Modal
+        function openFilmModal(filmId) {
+            const film = films.find(f => f.id === filmId);
+            const modal = document.getElementById('filmModal');
+            const content = document.getElementById('modalContent');
+            
+            const percentage = ((film.raised / film.target) * 100).toFixed(0);
+            
+            content.innerHTML = `
+                <div class="relative">
+                    <button onclick="closeFilmModal()" class="absolute top-4 right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="h-64 bg-gradient-to-br ${getGradientForGenre(film.genre)} flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-4">${film.title.split(' ').map(w => w[0]).join('')}</div>
+                            <div class="text-2xl font-bold">${film.title}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <div class="text-sm text-gray-500">Directed by</div>
+                                <div class="text-xl font-bold">${film.director}</div>
+                            </div>
+                            <span class="px-4 py-2 bg-purple-100 text-purple-600 rounded-full font-semibold">
+                                ${film.genre.toUpperCase()}
+                            </span>
+                        </div>
+                        
+                        <p class="text-gray-700 mb-6 leading-relaxed">${film.description}</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-6 mb-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="text-sm text-gray-500 mb-1">Cast</div>
+                                <div class="font-semibold">${film.cast}</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="text-sm text-gray-500 mb-1">Production</div>
+                                <div class="font-semibold">${film.production}</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="text-sm text-gray-500 mb-1">Distribution</div>
+                                <div class="font-semibold">${film.distribution}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-purple-50 rounded-xl p-6 mb-6">
+                            <div class="text-lg font-bold mb-4">Key Highlights</div>
+                            <ul class="space-y-2">
+                                ${film.highlights.map(h => `
+                                    <li class="flex items-start">
+                                        <svg class="w-5 h-5 text-purple-600 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span>${h}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-600">Funding Progress</span>
+                                <span class="font-bold text-purple-600">${percentage}% • $${(film.raised / 1000000).toFixed(2)}M / $${(film.target / 1000000).toFixed(1)}M</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-gradient-to-r from-purple-600 to-blue-600 h-3 rounded-full" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-4 gap-4 mb-6">
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600">$${film.minInvestment.toLocaleString()}</div>
+                                <div class="text-xs text-gray-600 mt-1">Min Investment</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600">${film.expectedROI}</div>
+                                <div class="text-xs text-gray-600 mt-1">Expected ROI</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600">${film.timeline}</div>
+                                <div class="text-xs text-gray-600 mt-1">Timeline</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-lg">
+                                <div class="text-2xl font-bold text-orange-600">${film.investors}</div>
+                                <div class="text-xs text-gray-600 mt-1">Investors</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <button onclick="alert('Investment feature coming soon!')" class="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-lg font-semibold text-lg hover:shadow-xl transition">
+                                Invest Now
+                            </button>
+                            <button onclick="alert('Saved to watchlist!')" class="px-6 py-4 border-2 border-purple-600 text-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function closeFilmModal() {
+            document.getElementById('filmModal').classList.remove('active');
+        }
+
+        // Calculator Functions
+        function updateCalculator() {
+            const amount = parseInt(document.getElementById('investmentSlider').value);
+            const performance = document.getElementById('performanceSelect').value;
+            const type = document.getElementById('investmentType').value;
+            
+            document.getElementById('investmentAmount').textContent = '$' + amount.toLocaleString();
+            
+            // ROI multipliers
+            const roiMap = {
+                conservative: 0.15,
+                moderate: 0.25,
+                strong: 0.40,
+                breakout: 1.00
+            };
+            
+            const typeMultipliers = {
+                equity: 1.0,
+                debt: 0.6,
+                mezzanine: 0.8
+            };
+            
+            const baseROI = roiMap[performance] * typeMultipliers[type];
+            const grossReturn = amount * baseROI;
+            const platformFees = amount * 0.055; // 5.5%
+            const netReturn = grossReturn - platformFees;
+            const totalReturn = amount + netReturn;
+            const annualROI = (baseROI / currentTimeHorizon * 100).toFixed(1);
+            
+            document.getElementById('totalReturn').textContent = '$' + totalReturn.toLocaleString();
+            document.getElementById('returnPercentage').textContent = '+' + (baseROI * 100).toFixed(1) + '% gain';
+            document.getElementById('annualROI').textContent = annualROI + '%';
+            document.getElementById('platformFees').textContent = '$' + platformFees.toLocaleString();
+            document.getElementById('initialInv').textContent = '$' + amount.toLocaleString();
+            document.getElementById('grossReturn').textContent = '+$' + grossReturn.toLocaleString();
+            document.getElementById('fees').textContent = '-$' + platformFees.toLocaleString();
+            document.getElementById('netProfit').textContent = '$' + netReturn.toLocaleString();
+        }
+
+        function setTimeHorizon(years) {
+            currentTimeHorizon = years;
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white');
+                btn.classList.add('bg-gray-100');
+            });
+            event.target.classList.add('bg-purple-600', 'text-white');
+            event.target.classList.remove('bg-gray-100');
+            updateCalculator();
+        }
+
+        // Navigation
+        function scrollToMarketplace() {
+            document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openCalculator() {
+            document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openInvestmentModal() {
+            alert('Sign up feature coming soon! This demo shows the platform functionality.');
+        }
+
+        // Close modal on outside click
+        document.getElementById('filmModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFilmModal();
+            }
+        });
+    </script>
+</body>
+</html>
